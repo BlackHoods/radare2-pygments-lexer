@@ -54,6 +54,7 @@ class Radare2Lexer(RegexLexer):
             (r'/|\||\\', Keyword),
             (r'[.,`][=-]+[<>]', Keyword),
             (r' ', Text),
+            (r'main', Text),
             (r';$', Text),
             (r',', Operator),
             (r';', Comment, 'comment'),

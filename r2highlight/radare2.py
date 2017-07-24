@@ -51,7 +51,7 @@ class Radare2Lexer(RegexLexer):
 
         'pdoutput': [
             (r'--', Text, 'stroutput'),
-            (r'/|\||\\', Keyword),
+            (r'/|\||\\|\W!', Keyword),
             (r'[.,`][=-]+[<>]', Keyword),
             (r' ', Text),
             

@@ -54,13 +54,20 @@ class Radare2Lexer(RegexLexer):
             (r'/|\||\\', Keyword),
             (r'[.,`][=-]+[<>]', Keyword),
             (r' ', Text),
+            
+            (r'local[0-9a-z_]*', Number.Hex),
+            # (r'main', Keyword),
+            # (r'var', Number.Hex),
+            (r'\(\)', Text),
+            (r'[-+*/&]?=', Name.Function),
+            
             (r';$', Text),
             (r',', Operator),
             (r';', Comment, 'comment'),
-            (r'(\()(.+?)(\))', bygroups(Text, Operator, Text)),
+            (r'(\()(.+?)(\))', bygroups(Text, Number.Hex, Text)),
             (r'([A-Za-z]{3})(\.)([A-Za-z]{3})(\.)([\w.]+)', bygroups(Keyword, Operator, Keyword, Operator, Text)),
-            (r'([A-Za-z]{3})(\.)([\w.]+)', bygroups(Keyword, Operator, Text)),
-            (r'\(\)', Text),
+            (r'([A-Za-z]{3})(\.)([\w\:.]+)', bygroups(Keyword, Operator, Text)),
+            
             (r'(0[Xx][0-9a-f]{8,})([ ]+)([0-9a-f]+\.?)([ ]+)', bygroups(String, Text, Text, Text)),
             (r'(0[Xx][0-9a-f]{8,})([ ]+)(\.?[A-Za-z0-9]+)([ ]+)(0[Xx][0-9a-f]{8,})', bygroups(String, Text, Keyword, Text, Number.Hex)),
             include('stackops'),
@@ -70,6 +77,7 @@ class Radare2Lexer(RegexLexer):
             include('ipops'),
             include('otherops'),
             include('registers'),
+            include('others'),
             (r'0[Xx][0-9a-f]+', Number.Hex),
             (r'[0-9a-f]', Number)
         ],
@@ -109,8 +117,12 @@ class Radare2Lexer(RegexLexer):
             (r'[|]', Keyword),
         ],
 
+        'others': [
+            (words(('var', 'if', 'goto')), Number.Hex)
+        ],
+        
         'registers': [
-            (words(('rsp', 'esp', 'spl', 'rbp', 'ebp', 'bpl', 'rax', 'eax', 'ah', 'al', 'rbx', 'ebx', 'bh', 'bl', 'rcx', 'ecx', 'cx', 'ch', 'cl', 'rdx', 'edx', 'dx', 'dh', 'dl', 'rdi', 'edi', 'dil', 'rsi', 'esi', 'sil', 'r15', 'r14', 'r13', 'r12', 'r10', 'r9', 'r9d', 'r8', 'r8d', 'fs:', 'gs:', 'cs:')),
+            (words(('main', 'rsp', 'esp', 'spl', 'rbp', 'ebp', 'bpl', 'rax', 'eax', 'ah', 'al', 'rbx', 'ebx', 'bh', 'bl', 'rcx', 'ecx', 'cx', 'ch', 'cl', 'rdx', 'edx', 'dx', 'dh', 'dl', 'rdi', 'edi', 'dil', 'rsi', 'esi', 'sil', 'r15', 'r14', 'r13', 'r12', 'r10', 'r9', 'r9d', 'r8', 'r8d', 'fs:', 'gs:', 'cs:')),
             Keyword)
         ],
 

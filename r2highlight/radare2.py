@@ -23,7 +23,7 @@ class Radare2Lexer(RegexLexer):
             (r'^\[', Text, 'cmdprompt'),
             (r'^sys', String, 'dmoutput'),
             (r'0[Xx]',String, 'addroutput'),
-            (r'^[|\\/ ]', Keyword, 'pdoutput'),
+            (r'^[|\\/┌│└ ]', Keyword, 'pdoutput'),
             (r'^-> % ', Keyword, 'bashprompt'),
             (r'^[^[]', Text, 'stroutput'),
         ],
@@ -52,7 +52,9 @@ class Radare2Lexer(RegexLexer):
         'pdoutput': [
             (r'--', Text, 'stroutput'),
             (r'/|\||\\|\W!', Keyword),
+            (r'│|↑', Keyword),
             (r'[.,`][=-]+[<>]', Keyword),
+            (r'[┌└][─]+[<>]', Keyword),
             (r' ', Text),
             
             (r'local[0-9a-z_]*', Number.Hex),

@@ -53,6 +53,7 @@ class Radare2Lexer(RegexLexer):
             (ur'[┌│└↑─<>]', Keyword),
             (r'[-+\*/&=]', Operator),
             (r'(\()(var)(\))', bygroups(Text, Number.Hex, Text)),
+            (r'(\()(fcn)(\))', bygroups(Text, Operator, Text)),
             (r'local_[0-9a-z_]+', Keyword),
             (r'main', Text),
 

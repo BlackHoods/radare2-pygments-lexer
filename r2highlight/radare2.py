@@ -42,8 +42,6 @@ class Radare2Lexer(RegexLexer):
         ],
 
         'dmoutput': [
-            #(r'(\s+)([0-9.]+)(.)(\s)(0[Xx][0-9a-f]+)(\s)(.)(\s)(0[Xx][0-9a-f])(\s)(.)(\s)([-rwx]+)(\s)
-            #(r'-|\*|/|_', Operator),
             (r'[0-9.]+(?:M|K)', Keyword),
             (r'0[Xx][0-9a-f]+', Number.Hex),
             (r'\bs\b', Text),
@@ -69,15 +67,13 @@ class Radare2Lexer(RegexLexer):
             (r',', Operator),
             (r';', Comment, 'comment'),
             (r'\(\)', Text),
+
             (r'(\()(.+?)(\))', bygroups(Text, Keyword, Text)),
-            
             (r'([A-Za-z]{3})(\.)([A-Za-z]{3})(\.)([\w.:]+)', bygroups(Keyword, Operator, Keyword, Operator, Text)),
-
             (r'([A-Za-z]{3})(\.)([\w.:]+)', bygroups(Keyword, Operator, Text)),
-
             (r'(0[Xx][0-9a-f]{8,})([ ]+)([0-9a-f]+\.?)([ ]+)', bygroups(String, Text, Text, Text)),
-
             (r'^(0[Xx][0-9a-f]{8,})([ ]+)(\.?[A-Za-z0-9]+)([ ]+)(0[Xx][0-9a-f]{8,})', bygroups(String, Text, Keyword, Text, Number.Hex)),
+            
             include('stackops'),
             include('copyops'),
             include('arithmeticops'),
@@ -95,39 +91,16 @@ class Radare2Lexer(RegexLexer):
         ],
 
         'cmdprompt': [
-            #(r'(0[xX][0-9a-f]+)(\])(>)(\s+)([?])(.*$)', bygroups(Number.Hex, Text, Operator, Text, Name.Function, Text), "mathoutput"),
             (r'(0[xX][0-9a-f]+)(\])(>)(\s+)(\w+)?(.*)', bygroups(Number.Hex, Text, Operator, Text, Name.Function, Text)),
             (r'.+', Text)
         ],
 
-        #'mathoutput': [
-        #    #(r'([-\d])(\s+)(0x[a-f0-9]+)(\s+)(\d+\w)(\s+)(', Comment, '#pop')
-        #    (r'(\d)', bygroups(Number.Hex), "mathoutput"),
-        #    (r'([.-\w])', bygroups(Operator), "mathoutput"),
-        #    (r'(\s)', bygroups(Text), "mathoutput"),
-        #    (r'($)', bygroups(Text), "#pop")
-        #],
-
         'addroutput': [
             (r'([0-9a-f]{8,})(\s+\d+\s\d+\s+)([0-9A-z\._]+)$', bygroups(String, Number.Hex, Text)),
             (r'([0-9a-f]{8,})(\s+\d+\s\d+)(\s*->)(\s\d*)(\s*[0-9A-z\._]+)$', bygroups(String, Number.Hex, Operator, Number.Hex, Text)),
-            
             (r'([0-9a-f]{8,})(\s{2})([0-9A-z\s]+)(\s\s)(.{16})$', bygroups(String, Text, Number.Hex, Text, Text)),
             (r'([0-9a-f]+\s)(\d+\s)([0-9A-z/_ ]+)(]>)(.+)$', bygroups(String, Keyword, Operator, String, Text)),
-
-            
-
-            
-            #(r'([0-9a-f]{8,})(\s{4})(\d+\s?)(\d+\s+)(-?>?\s*)(\d*)([0-9A-z\._]+)$', bygroups(String, Text, Number.Hex, Number.Hex, Operator, Number.Hex, Text)),
-
-            # (r'([0-9a-f]+)(\s{2})(.+)(\s{2})(.+)$', bygroups(String, Text, Number.Hex, Text, Text)),
-            # (r'([0-9a-f]+)(\s*)(->)(.+)$', bygroups(String, Text, Operator, Text)),
-
-            (r'([0-9a-f]+)(\s*)$', bygroups(String, Text)),
-            
-            
-            #(r'^\[', Text, '#pop'),
-            #(r'(0[Xx][0-9a-f])(\s+)(.+)$', bygroups(Number.Hex, Text, Text))
+            (r'([0-9a-f]+)(\s*)$', bygroups(String, Text))
         ],
 
         'stroutput': [

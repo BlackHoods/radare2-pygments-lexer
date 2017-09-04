@@ -23,7 +23,7 @@ class Radare2Lexer(RegexLexer):
             (r'\n', Text),
             (r'^\[', Text, 'cmdprompt'),
             (r'^sys|usr', String, 'dmoutput'),
-            (r'0[Xx]',String, 'addroutput'),
+            (r'^0[Xx]', String, 'addroutput'),
             (ur'^[|\\/┌│└ ]', Keyword, 'pdoutput'),
             (r'^-> % ', Keyword, 'bashprompt'),
             (r'^\$ ', Text, 'bashprompt'),
@@ -70,10 +70,14 @@ class Radare2Lexer(RegexLexer):
             (r';', Comment, 'comment'),
             (r'\(\)', Text),
             (r'(\()(.+?)(\))', bygroups(Text, Keyword, Text)),
+            
             (r'([A-Za-z]{3})(\.)([A-Za-z]{3})(\.)([\w.:]+)', bygroups(Keyword, Operator, Keyword, Operator, Text)),
+
             (r'([A-Za-z]{3})(\.)([\w.:]+)', bygroups(Keyword, Operator, Text)),
+
             (r'(0[Xx][0-9a-f]{8,})([ ]+)([0-9a-f]+\.?)([ ]+)', bygroups(String, Text, Text, Text)),
-            (r'(0[Xx][0-9a-f]{8,})([ ]+)(\.?[A-Za-z0-9]+)([ ]+)(0[Xx][0-9a-f]{8,})', bygroups(String, Text, Keyword, Text, Number.Hex)),
+
+            (r'^(0[Xx][0-9a-f]{8,})([ ]+)(\.?[A-Za-z0-9]+)([ ]+)(0[Xx][0-9a-f]{8,})', bygroups(String, Text, Keyword, Text, Number.Hex)),
             include('stackops'),
             include('copyops'),
             include('arithmeticops'),
@@ -105,11 +109,23 @@ class Radare2Lexer(RegexLexer):
         #],
 
         'addroutput': [
-            (r'([0-9a-f]+)(\s{2})(.+)(\s{2})(.+)$', bygroups(String, Text, Number.Hex, Text, Text)),
-            (r'([0-9a-f]+)(\s*)$', bygroups(String, Text)),
-            (r'([0-9a-f]+)(\s*)(->)(.+)$', bygroups(String, Text, Operator, Text)),
+            (r'([0-9a-f]{8,})(\s+\d+\s\d+\s+)([0-9A-z\._]+)$', bygroups(String, Number.Hex, Text)),
+            (r'([0-9a-f]{8,})(\s+\d+\s\d+)(\s*->)(\s\d*)(\s*[0-9A-z\._]+)$', bygroups(String, Number.Hex, Operator, Number.Hex, Text)),
+            
+            (r'([0-9a-f]{8,})(\s{2})([0-9A-z\s]+)(\s\s)(.{16})$', bygroups(String, Text, Number.Hex, Text, Text)),
+            (r'([0-9a-f]+\s)(\d+\s)([0-9A-z/_ ]+)(]>)(.+)$', bygroups(String, Keyword, Operator, String, Text)),
 
-            (r'([0-9a-f]+\s)(\d+\s)([0-9A-z/_ ]+)(]>)(.+)$', bygroups(String, Keyword, Operator, String, Text))
+            
+
+            
+            #(r'([0-9a-f]{8,})(\s{4})(\d+\s?)(\d+\s+)(-?>?\s*)(\d*)([0-9A-z\._]+)$', bygroups(String, Text, Number.Hex, Number.Hex, Operator, Number.Hex, Text)),
+
+            # (r'([0-9a-f]+)(\s{2})(.+)(\s{2})(.+)$', bygroups(String, Text, Number.Hex, Text, Text)),
+            # (r'([0-9a-f]+)(\s*)(->)(.+)$', bygroups(String, Text, Operator, Text)),
+
+            (r'([0-9a-f]+)(\s*)$', bygroups(String, Text)),
+            
+            
             #(r'^\[', Text, '#pop'),
             #(r'(0[Xx][0-9a-f])(\s+)(.+)$', bygroups(Number.Hex, Text, Text))
         ],
@@ -127,7 +143,7 @@ class Radare2Lexer(RegexLexer):
         ],
 
         'registers': [
-            (words(('rsp', 'esp', 'spl', 'rbp', 'ebp', 'bpl', 'rax', 'eax', 'ah', 'al', 'rbx', 'ebx', 'bh', 'bl', 'rcx', 'ecx', 'cx', 'ch', 'cl', 'rdx', 'edx', 'dx', 'dh', 'dl', 'rdi', 'edi', 'dil', 'rsi', 'esi', 'sil', 'r15', 'r14', 'r13', 'r12', 'r10', 'r9', 'r9d', 'r8', 'r8d', 'fs:', 'gs:', 'cs:')),
+            (words(('rsp', 'esp', 'spl', 'rbp', 'ebp', 'bpl', 'rax', 'eax', 'ah', 'al', 'rbx', 'ebx', 'bh', 'bl', 'rcx', 'ecx', 'cx', 'ch', 'cl', 'rdx', 'edx', 'dx', 'dh', 'dl', 'rdi', 'edi', 'dil', 'rsi', 'rip', 'esi', 'sil', 'r15', 'r14', 'r13', 'r12', 'r11', 'r10', 'r9', 'r9d', 'r8', 'r8d', 'fs:', 'gs:', 'cs:')),
             Keyword)
         ],
 

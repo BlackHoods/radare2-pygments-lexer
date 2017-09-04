@@ -19,17 +19,21 @@ class Radare2Lexer(RegexLexer):
 
     tokens = {
         'root': [
+            (r'^ -- ', Text, 'bashprompt'),
             (r'\n', Text),
             (r'^\[', Text, 'cmdprompt'),
-            (r'^sys', String, 'dmoutput'),
+            (r'^sys|usr', String, 'dmoutput'),
             (r'0[Xx]',String, 'addroutput'),
             (ur'^[|\\/┌│└ ]', Keyword, 'pdoutput'),
             (r'^-> % ', Keyword, 'bashprompt'),
+            (r'^\$ ', Text, 'bashprompt'),
             (r'^[^[]', Text, 'stroutput'),
         ],
 
         'bashprompt': [
+            (r'^ -- ', Text, 'bashprompt'),
             (r'^-> % ', Keyword, 'bashprompt'),
+            (r'^\$ ', Text, 'bashprompt'),
             (r'[\n ]', Text),
             (r'[./]', Operator, 'bashprompt'),
             (r'^\[', Text, 'cmdprompt'),
@@ -38,12 +42,12 @@ class Radare2Lexer(RegexLexer):
         ],
 
         'dmoutput': [
-        #    #(r'(\s+)([0-9.]+)(.)(\s)(0[Xx][0-9a-f]+)(\s)(.)(\s)(0[Xx][0-9a-f])(\s)(.)(\s)([-rwx]+)(\s)
+            #(r'(\s+)([0-9.]+)(.)(\s)(0[Xx][0-9a-f]+)(\s)(.)(\s)(0[Xx][0-9a-f])(\s)(.)(\s)([-rwx]+)(\s)
+            #(r'-|\*|/|_', Operator),
             (r'[0-9.]+(?:M|K)', Keyword),
             (r'0[Xx][0-9a-f]+', Number.Hex),
             (r'\bs\b', Text),
             (r'[rwx-]{4}', Operator),
-            #(r'-|\*|/|_', Operator),
             (r'[-*/_.;[\]]', Operator),
             (r' ', Text),
             (r'[A-Za-z0-9]+', Text)
@@ -82,7 +86,6 @@ class Radare2Lexer(RegexLexer):
             (r'[0-9a-f]', Number)
         ],
 
-
         'comment': [
             (r'.+$', Comment, '#pop')
         ],
@@ -105,6 +108,8 @@ class Radare2Lexer(RegexLexer):
             (r'([0-9a-f]+)(\s{2})(.+)(\s{2})(.+)$', bygroups(String, Text, Number.Hex, Text, Text)),
             (r'([0-9a-f]+)(\s*)$', bygroups(String, Text)),
             (r'([0-9a-f]+)(\s*)(->)(.+)$', bygroups(String, Text, Operator, Text)),
+
+            (r'([0-9a-f]+\s)(\d+\s)([0-9A-z/_ ]+)(]>)(.+)$', bygroups(String, Keyword, Operator, String, Text))
             #(r'^\[', Text, '#pop'),
             #(r'(0[Xx][0-9a-f])(\s+)(.+)$', bygroups(Number.Hex, Text, Text))
         ],

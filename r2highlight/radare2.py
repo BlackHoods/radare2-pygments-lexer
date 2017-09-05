@@ -19,26 +19,25 @@ class Radare2Lexer(RegexLexer):
 
     tokens = {
         'root': [
+            #(r'\n', Text),
+            (r'^\$| -- ', Text, 'bashprompt'),
             (r'^ -- ', Text, 'bashprompt'),
-            (r'\n', Text),
+
             (r'^\[', Text, 'cmdprompt'),
             (r'^sys|usr', String, 'dmoutput'),
-            (r'^0[Xx]', String, 'addroutput'),
+            (r'0[Xx]', String, 'addroutput'),
             (ur'^[|\\/┌│└ ]', Keyword, 'pdoutput'),
-            (r'^-> % ', Keyword, 'bashprompt'),
-            (r'^\$ ', Text, 'bashprompt'),
-            (r'^[^[]', Text, 'stroutput'),
+            (r'^[^[]', Text, 'stroutput')
         ],
 
         'bashprompt': [
-            (r'^ -- ', Text, 'bashprompt'),
-            (r'^-> % ', Keyword, 'bashprompt'),
-            (r'^\$ ', Text, 'bashprompt'),
-            (r'[\n ]', Text),
-            (r'[./]', Operator, 'bashprompt'),
-            (r'^\[', Text, 'cmdprompt'),
-            (r'[^|\n ]+', Text, 'bashprompt'),
-            (r'\|', Operator, 'bashprompt')
+            (r'.+', Text, 'bashprompt'),
+            # (r'^ -- ', Text, 'bashprompt'),
+            # (r'[\n ]', Text),
+            # (r'[./]', Operator, 'bashprompt'),
+            # (r'^\[', Text, 'cmdprompt'),
+            # (r'[^|\n ]+', Text, 'bashprompt'),
+            # (r'\|', Operator, 'bashprompt')
         ],
 
         'dmoutput': [

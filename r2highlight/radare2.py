@@ -115,7 +115,7 @@ class Radare2Lexer(RegexLexer):
         ],
 
         'registers': [
-            (words(('rsp', 'esp', 'spl', 'rbp', 'ebp', 'bpl', 'rax', 'eax', 'ah', 'al', 'rbx', 'ebx', 'bh', 'bl', 'rcx', 'ecx', 'cx', 'ch', 'cl', 'rdx', 'edx', 'dx', 'dh', 'dl', 'rdi', 'edi', 'dil', 'rsi', 'rip', 'esi', 'sil', 'r15', 'r14', 'r13', 'r12', 'r11', 'r10', 'r9', 'r9d', 'r8', 'r8d', 'fs:', 'gs:', 'cs:')),
+            (words(('rsp', 'esp', 'spl', 'rbp', 'ebp', 'bpl', 'rax', 'eax', 'ah', 'al', 'rbx', 'ebx', 'bh', 'bl', 'rcx', 'ecx', 'cx', 'ch', 'cl', 'rdx', 'edx', 'dx', 'dh', 'dl', 'rdi', 'edi', 'dil', 'rsi', 'rip', 'esi', 'sil', 'r15', 'r14', 'r13', 'r12', 'r11', 'r10', 'r9', 'r9d', 'r8', 'r8d', 'rflags', 'fs:', 'gs:', 'cs:')),
             Keyword)
         ],
 

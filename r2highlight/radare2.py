@@ -26,7 +26,7 @@ class Radare2Lexer(RegexLexer):
             (r'^\[', Text, 'cmdprompt'),
             (r'^sys|usr', String, 'dmoutput'),
             (r'0[Xx]', String, 'addroutput'),
-            (ur'^[|\\/┌│└ ]', Keyword, 'pdoutput'),
+            (r'^[|\\/┌│└ ]', Keyword, 'pdoutput'),
             (r'^[^[]', Text, 'stroutput')
         ],
 
@@ -51,7 +51,7 @@ class Radare2Lexer(RegexLexer):
         ],
 
         'pdoutput': [
-            (ur'[┌│└↑─<>]', Keyword),
+            (r'[┌│└↑─<>]', Keyword),
             (r'[-+\*/&=]', Operator),
             (r'(\()(var)(\))', bygroups(Text, Number.Hex, Text)),
             (r'(\()(fcn)(\))', bygroups(Text, Operator, Text)),
@@ -72,7 +72,7 @@ class Radare2Lexer(RegexLexer):
             (r'([A-Za-z]{3})(\.)([\w.:]+)', bygroups(Keyword, Operator, Text)),
             (r'(0[Xx][0-9a-f]{8,})([ ]+)([0-9a-f]+\.?)([ ]+)', bygroups(String, Text, Text, Text)),
             (r'^(0[Xx][0-9a-f]{8,})([ ]+)(\.?[A-Za-z0-9]+)([ ]+)(0[Xx][0-9a-f]{8,})', bygroups(String, Text, Keyword, Text, Number.Hex)),
-            
+
             include('stackops'),
             include('copyops'),
             include('arithmeticops'),
